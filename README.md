@@ -1,53 +1,87 @@
-<div align="center">
+# Smart Clock & Timer – Dual View Clock + Timer
 
-![GitHub repo size](https://img.shields.io/github/repo-size/silasdev-ke/smart-clock)
-![GitHub stars](https://img.shields.io/github/stars/silasdev-ke/smart-clock?style=social)
-![GitHub forks](https://img.shields.io/github/forks/silasdev-ke/smart-clock?style=social)
-[![Twitter Follow](https://img.shields.io/twitter/follow/mugambimungiria?style=social)](https://twitter.com/intent/follow?screen_name=mugambimungiria)
+A clean, minimalist web app that combines an analog/digital clock with a countdown timer. Designed for exam settings, it features a distraction‑free interface with smooth animations and responsive layout.
 
-  <br />
-  <br />
+![Screenshot](images/screenshots/screenshot.png) <!-- add a screenshot later -->
 
-  <h2 align="center">Web Digital / Analog Clock</h2>
+## Features
 
-A fully responsive web digital / analog clock, <br />Responsive for all devices, build using html, css, and javascript.
+- **Real‑time analog clock** with hour, minute, and second hands.
+- **Digital clock** displaying hours, minutes, seconds, and AM/PM.
+- **Exam timer** with:
+  - Custom duration (hours/minutes/seconds)
+  - Start, pause, reset controls
+  - Progress bar and percentage
+  - Start time and estimated end time display
+- **Three viewing modes**: Clock only, Timer only, or Both side‑by‑side.
+- **Full‑screen toggle** – expand the interface for focused work.
+- **Consistent color scheme** – the timer uses the same vibrant colors as the digital clock.
+- **Responsive design** – works on desktop, tablet, and mobile.
 
-<a href="https://silasdev-ke.github.io/smart-clock/"><strong>➥ Live Demo</strong></a>
+## Technologies
 
-</div>
+- HTML5
+- CSS3 (with CSS variables for easy theming)
+- JavaScript (ES6 modules)
+- Fullscreen API
 
-<br />
+## Usage
 
-### Demo Screeshots
+1. Set the timer duration using the minutes/seconds inputs and click **Set**.
+2. Press **START** to begin the countdown.
+3. Use **PAUSE** and **RESET** as needed.
+4. Switch viewing modes using the buttons at the bottom.
+5. Click **⛶ Fullscreen** to enter/exit full‑screen mode.
 
-![Music Player Desktop Demo](./assets/screenshot.png "Desktop Demo")
+## File Structure
 
-### Prerequisites
-
-Before you begin, ensure you have met the following requirements:
-
-- [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
-
-### Run Locally
-
-To run **Digital Clock ** locally, run this command on your git bash:
-
-Linux and macOS:
-
-```bash
-sudo git clone https://github.com/silasdev-ke/smart-clock.git
 ```
 
-Windows:
+smart-clock/
+├── index.html
+├── css/
+│ └── styles.css
+├── js/
+│ ├── main.js
+│ ├── modules/
+│ │ ├── clock.js
+│ │ ├── timer.js
+│ │ ├── view.js
+│ │ └── fullscreen.js
+│ └── utils/
+│ └── helpers.js
+└── README.md
+
+```
+
+## Installation
+
+Clone the repository and open `index.html` in any modern browser:
 
 ```bash
 git clone https://github.com/silasdev-ke/smart-clock.git
+cd smart-clock
+open index.html   # or double‑click it
 ```
 
-### Contact
+---
 
-You can reach out to me at [Twitter](https://www.twitter.com/mugambimungiria).
+## 5. Optional: Addictional screenshot of the timer
 
-### License
+### Classic View
 
-This project is **free to use** and does not contains any license.
+![Screenshot](images/screenshots/screenshot-classic.png)
+
+### Modern Interface
+
+![Screenshot](images/screenshots/screenshot-modern.png)
+
+### Standard Layout
+
+![Screenshot](images/screenshots/screenshot-std.png)
+
+### Active Timer
+
+![Screenshot](images/screenshots/screenshot-timer.png)
+
+---

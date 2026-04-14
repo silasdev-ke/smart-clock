@@ -1,0 +1,623 @@
+/* ----- CSS VARIABLES (consistent color palette) ----- */
+:root {
+  --color-hour: #ff2972;
+  --color-minute: #fee800;
+  --color-second: #04fc43;
+  --color-accent: #ffb347;
+  --color-glow: #ff9f2e;
+  --color-bg-dark: #2f363e;
+  --color-bg-panel: #2f363e;
+  --color-bg-card: #1f2c32;
+  --color-text-light: #e2eaf1;
+  --color-text-muted: #bcd0dd;
+  --color-progress-bg: #2a353d;
+  --color-shadow-dark: rgba(0, 0, 0, 0.75);
+  --color-shadow-light: rgba(255, 255, 255, 0.2);
+  --transition-default: all 0.2s ease;
+}
+
+/* ----- RESET & GLOBAL ----- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-bg-dark);
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* dashboard as column, full height */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  max-width: 1400px;
+  width: 100%;
+  min-height: 90vh;
+  background: transparent;
+}
+
+/* main content: takes all remaining space */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* left: clock card */
+.clock-card {
+  background: var(--color-bg-panel);
+  border-radius: 20px;
+  border-top-left-radius: 225px;
+  border-top-right-radius: 225px;
+  box-shadow:
+    25px 25px 75px var(--color-shadow-dark),
+    10px 10px 70px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 10px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 20px var(--color-shadow-light),
+    inset -5px -5px 15px var(--color-shadow-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2rem 2rem;
+  flex: 1.2;
+  min-width: 280px;
+  transition: var(--transition-default);
+}
+
+/* analog clock (default size) */
+.clock {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  background: var(--color-bg-panel);
+  border-radius: 50%;
+  box-shadow:
+    10px 50px 70px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 10px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 20px var(--color-shadow-light),
+    inset -5px 5px 15px var(--color-shadow-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  transition: var(--transition-default);
+}
+
+/* analog clock responsive scaling */
+@media (min-width: 700px) {
+  .clock {
+    width: 340px;
+    height: 340px;
+  }
+}
+@media (min-width: 1000px) {
+  .clock {
+    width: 380px;
+    height: 380px;
+  }
+}
+
+/* When in Classic mode (analog only), make analog clock even larger */
+.dashboard.analog-mode .clock-card .clock {
+  width: 420px;
+  height: 420px;
+}
+@media (min-width: 700px) {
+  .dashboard.analog-mode .clock-card .clock {
+    width: 480px;
+    height: 480px;
+  }
+}
+@media (min-width: 1000px) {
+  .dashboard.analog-mode .clock-card .clock {
+    width: 540px;
+    height: 540px;
+  }
+}
+
+.clock::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--color-bg-panel);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  z-index: 1000;
+}
+
+.clock span {
+  position: absolute;
+  inset: 20px;
+  color: #fff;
+  text-align: center;
+  transform: rotate(calc(30deg * var(--i)));
+}
+.clock span b {
+  font-size: 1.3rem;
+  opacity: 0.35;
+  font-weight: 600;
+  display: inline-block;
+  transform: rotate(calc(-30deg * var(--i)));
+}
+@media (min-width: 700px) {
+  .clock span b {
+    font-size: 1.7rem;
+  }
+}
+.dashboard.analog-mode .clock span b {
+  font-size: 2rem;
+}
+@media (min-width: 700px) {
+  .dashboard.analog-mode .clock span b {
+    font-size: 2.4rem;
+  }
+}
+
+.circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 10;
+}
+.circle i {
+  position: absolute;
+  width: 4px;
+  height: 50%;
+  background: var(--clr);
+  opacity: 0.9;
+  transform-origin: bottom;
+  transform: scaleY(0.5);
+  border-radius: 4px;
+}
+.circle:nth-child(1) i {
+  width: 2px;
+}
+.circle:nth-child(2) i {
+  width: 6px;
+}
+.circle2 {
+  width: 170px;
+  height: 170px;
+  z-index: 9;
+}
+.circle3 {
+  width: 135px;
+  height: 135px;
+  z-index: 8;
+}
+.circle::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--clr);
+  box-shadow: 0 0 18px var(--clr);
+}
+
+/* digital clock (default size) */
+#time {
+  display: flex;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 40px;
+  box-shadow:
+    5px 5px 10px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 20px var(--color-shadow-light),
+    inset -5px -5px 15px var(--color-shadow-dark);
+  background: var(--color-bg-panel);
+  transition: var(--transition-default);
+}
+#time div {
+  position: relative;
+  width: 55px;
+  font-weight: 500;
+  color: var(--clr);
+  text-align: center;
+}
+#time div:nth-child(1)::after,
+#time div:nth-child(2)::after {
+  content: ":";
+  position: absolute;
+  right: -4px;
+  color: #ddd;
+}
+#time div:last-child {
+  font-size: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+#time div:nth-child(2)::after {
+  animation: animate 1s steps(1) infinite;
+}
+@keyframes animate {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Modern mode (digital only) */
+.dashboard.digital-mode .clock-card #time {
+  padding: 1rem 2rem;
+  font-size: 3rem;
+  border-radius: 80px;
+}
+.dashboard.digital-mode .clock-card #time div {
+  width: 100px;
+  font-size: 3rem;
+}
+.dashboard.digital-mode .clock-card #time div:last-child {
+  font-size: 1.2rem;
+}
+@media (min-width: 700px) {
+  .dashboard.digital-mode .clock-card #time {
+    font-size: 4rem;
+    padding: 1.5rem 3rem;
+  }
+  .dashboard.digital-mode .clock-card #time div {
+    width: 130px;
+    font-size: 4rem;
+  }
+  .dashboard.digital-mode .clock-card #time div:last-child {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 1000px) {
+  .dashboard.digital-mode .clock-card #time {
+    font-size: 5rem;
+    padding: 2rem 4rem;
+  }
+  .dashboard.digital-mode .clock-card #time div {
+    width: 160px;
+    font-size: 5rem;
+  }
+  .dashboard.digital-mode .clock-card #time div:last-child {
+    font-size: 1.8rem;
+  }
+}
+
+/* Standard mode (both clocks) */
+.dashboard.clock-mode .clock-card .clock {
+  width: 300px;
+  height: 300px;
+}
+.dashboard.clock-mode .clock-card #time {
+  font-size: 1.8rem;
+  padding: 0.7rem 1.5rem;
+}
+.dashboard.clock-mode .clock-card #time div {
+  width: 65px;
+}
+@media (min-width: 700px) {
+  .dashboard.clock-mode .clock-card .clock {
+    width: 360px;
+    height: 360px;
+  }
+  .dashboard.clock-mode .clock-card #time {
+    font-size: 2rem;
+  }
+  .dashboard.clock-mode .clock-card #time div {
+    width: 75px;
+  }
+}
+@media (min-width: 1000px) {
+  .dashboard.clock-mode .clock-card .clock {
+    width: 400px;
+    height: 400px;
+  }
+  .dashboard.clock-mode .clock-card #time {
+    font-size: 2.2rem;
+  }
+  .dashboard.clock-mode .clock-card #time div {
+    width: 85px;
+  }
+}
+
+/* Timer panel */
+.timer-panel {
+  background: var(--color-bg-panel);
+  border-radius: 2rem;
+  padding: 1.8rem 1.5rem;
+  box-shadow:
+    25px 25px 75px var(--color-shadow-dark),
+    10px 10px 70px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 10px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 20px var(--color-shadow-light),
+    inset -5px -5px 15px var(--color-shadow-dark);
+  flex: 1;
+  min-width: 280px;
+}
+.timer-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.timer-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--color-minute), var(--color-accent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: -0.5px;
+}
+.big-remaining {
+  background: #1e2a2f;
+  border-radius: 2rem;
+  padding: 0.8rem 0.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  box-shadow:
+    inset 0 0 8px #00000055,
+    0 6px 12px rgba(0, 0, 0, 0.3);
+}
+.big-remaining span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-minute);
+  text-shadow: 0 0 6px var(--color-glow);
+  letter-spacing: 3px;
+}
+@media (max-width: 700px) {
+  .big-remaining span {
+    font-size: 2rem;
+  }
+}
+.progress-wrapper {
+  margin: 1rem 0;
+}
+.progress-bar-bg {
+  background: var(--color-progress-bg);
+  border-radius: 30px;
+  height: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px black;
+}
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-hour), var(--color-minute));
+  border-radius: 30px;
+  transition: width 0.2s linear;
+}
+.progress-percent {
+  text-align: right;
+  font-size: 0.7rem;
+  color: var(--color-minute);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: space-between;
+  margin: 1.2rem 0;
+}
+.info-card {
+  background: var(--color-bg-card);
+  border-radius: 1.5rem;
+  padding: 0.5rem 0.8rem;
+  text-align: center;
+  flex: 1;
+  min-width: 80px;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.info-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+}
+.info-value {
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: monospace;
+  color: var(--color-minute);
+}
+.duration-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: 3rem;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  transition: var(--transition-default);
+}
+.duration-row.hidden {
+  display: none;
+}
+.dur-group {
+  background: #0f1a1f;
+  border-radius: 2rem;
+  padding: 0.3rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.dur-group label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.dur-input {
+  background: #101e24;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 2rem;
+  color: var(--color-minute);
+  width: 70px;
+  text-align: center;
+  font-weight: 600;
+  font-family: monospace;
+}
+.dur-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.2rem 0 0.8rem;
+}
+.btn {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    opacity 0.2s;
+  background: #2f414b;
+  color: #f3edd8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.btn:active {
+  transform: scale(0.96);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-primary {
+  background: var(--color-hour);
+  color: white;
+}
+.btn-warning {
+  background: var(--color-minute);
+  color: #1e2a2f;
+}
+.btn-danger {
+  background: var(--color-second);
+  color: #1e2a2f;
+}
+.status-msg {
+  background: #0a1219;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  font-size: 0.7rem;
+  color: var(--color-minute);
+  margin-top: 1rem;
+}
+
+/* mode switch & fullscreen button */
+.mode-switch {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0 0.2rem;
+  margin-top: auto;
+}
+.mode-switch .view-option,
+.mode-switch .fullscreen-btn {
+  background: #3e4b55;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 40px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-light);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+.mode-switch .view-option.active {
+  background: var(--color-accent);
+  color: #1e2a2f;
+}
+.mode-switch .view-option:hover,
+.mode-switch .fullscreen-btn:hover {
+  background: #5b6f7c;
+  color: #ffffff;
+}
+
+/* visibility classes for clock card parts */
+.hide-analog .clock {
+  display: none;
+}
+.hide-digital #time {
+  display: none;
+}
+
+/* view visibility for timer panel and clock card */
+.dashboard.analog-mode .main-content .timer-panel,
+.dashboard.digital-mode .main-content .timer-panel,
+.dashboard.clock-mode .main-content .timer-panel {
+  display: none;
+}
+.dashboard.timer-mode .main-content .clock-card {
+  display: none;
+}
+.dashboard.timer-mode .main-content .timer-panel {
+  width: 100%;
+  flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+  .main-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .dashboard.analog-mode .clock-card .clock {
+    width: 320px;
+    height: 320px;
+  }
+  .dashboard.digital-mode .clock-card #time {
+    font-size: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+  .dashboard.digital-mode .clock-card #time div {
+    width: 80px;
+    font-size: 2.5rem;
+  }
+  .dashboard.clock-mode .clock-card .clock {
+    width: 260px;
+    height: 260px;
+  }
+  .dashboard.clock-mode .clock-card #time {
+    font-size: 1.4rem;
+  }
+}
