@@ -2,7 +2,7 @@
 
 A clean, minimalist web app that combines an analog/digital clock with a countdown timer. Designed for exam settings, it features a distraction‑free interface with smooth animations and responsive layout.
 
-![Screenshot](images/screenshots/screenshot.png) <!-- add a screenshot later -->
+![Screenshot](assets/images/screenshots/screenshot.png) <!-- add a screenshot later -->
 
 ## Features
 
@@ -39,18 +39,22 @@ A clean, minimalist web app that combines an analog/digital clock with a countdo
 
 smart-clock/
 ├── index.html
-├── css/
-│ └── styles.css
-├── js/
-│ ├── main.js
-│ ├── modules/
-│ │ ├── clock.js
-│ │ ├── timer.js
-│ │ ├── view.js
-│ │ └── fullscreen.js
-│ └── utils/
-│ └── helpers.js
-└── README.md
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   ├── main.js
+│   │   ├── modules/
+│   │   │   ├── clock.js
+│   │   │   ├── fullscreen.js
+│   │   │   ├── settings.js
+│   │   │   ├── theme.js
+│   │   │   ├── timer.js
+│   │   │   └── view.js
+│   │   └── utils/
+│   │       └── helpers.js
+│   └── images/
+├── README.md
 
 ```
 
@@ -70,18 +74,22 @@ open index.html   # or double‑click it
 
 ### Classic View
 
-![Screenshot](images/screenshots/screenshot-classic.png)
+![Screenshot](assets/images/screenshots/screenshot-classic.png)
 
 ### Modern Interface
 
-![Screenshot](images/screenshots/screenshot-modern.png)
+![Screenshot](assets/images/screenshots/screenshot-modern.png)
 
 ### Standard Layout
 
-![Screenshot](images/screenshots/screenshot-std.png)
+![Screenshot](assets/images/screenshots/screenshot-standard.png)
 
 ### Active Timer
 
-![Screenshot](images/screenshots/screenshot-timer.png)
+![Screenshot](assets/images/screenshots/screenshot-timer.png)
+
+### Settings Layout
+
+![Screenshot](assets/images/screenshots/screenshot-settings.png)
 
 ---

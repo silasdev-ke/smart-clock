@@ -1,7 +1,4 @@
 // js/modules/view.js
-/**
- * View Module: handles layout modes (Classic, Modern, Standard, Split, Exam Focus)
- */
 export function initView() {
   const dashboard = document.getElementById("dashboard");
   const clockCard = document.getElementById("clockCard");
@@ -12,7 +9,7 @@ export function initView() {
     modern: "digital",
     standard: "clock",
     split: "both",
-    exam: "timer",
+    timerfocus: "timer", // renamed from "exam"
   };
 
   function setView(viewValue) {
@@ -43,7 +40,7 @@ export function initView() {
         dashboard.classList.add("clock-mode");
         break;
       case "both":
-        // Split view: default, no extra class
+        // split view – no extra class
         break;
       case "timer":
         dashboard.classList.add("timer-mode");
@@ -52,7 +49,7 @@ export function initView() {
         break;
     }
 
-    // Update active button styling
+    // Update active button styling – ensure all are updated correctly
     viewButtons.forEach((btn) => {
       const btnView = btn.getAttribute("data-view");
       if (btnView === viewValue) {

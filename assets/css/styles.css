@@ -1,0 +1,475 @@
+/* ===== CLOCK MECHANICS ===== */
+.circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 10;
+}
+
+.circle i {
+  position: absolute;
+  width: 4px;
+  height: 50%;
+  background: var(--clr);
+  opacity: 0.9;
+  transform-origin: bottom;
+  transform: scaleY(0.5);
+  border-radius: 4px;
+}
+
+.circle:nth-child(1) i {
+  width: 2px;
+}
+
+.circle:nth-child(2) i {
+  width: 6px;
+}
+
+.circle2 {
+  width: 170px;
+  height: 170px;
+  z-index: 9;
+}
+
+.circle3 {
+  width: 135px;
+  height: 135px;
+  z-index: 8;
+}
+
+.circle::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--clr);
+  box-shadow: 0 0 18px var(--clr);
+}
+
+.clock span {
+  position: absolute;
+  inset: 20px;
+  color: #fff;
+  text-align: center;
+  transform: rotate(calc(30deg * var(--i)));
+}
+
+.clock span b {
+  font-size: 1.3rem;
+  opacity: 0.35;
+  font-weight: 600;
+  display: inline-block;
+  transform: rotate(calc(-30deg * var(--i)));
+}
+
+@keyframes animate {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+#time div:nth-child(2)::after {
+  content: ":";
+  position: absolute;
+  right: -4px;
+  color: #ddd;
+  animation: animate 1s steps(1) infinite;
+}
+
+#time div:nth-child(1)::after {
+  content: ":";
+  position: absolute;
+  right: -4px;
+  color: #ddd;
+}
+
+/* ===== VIEW MODE OVERRIDES ===== */
+.dashboard.analog-mode .clock-card .clock {
+  width: 420px;
+  height: 420px;
+}
+
+.dashboard.analog-mode .clock span b {
+  font-size: 2rem;
+}
+
+@media (min-width: 700px) {
+  .dashboard.analog-mode .clock-card .clock {
+    width: 480px;
+    height: 480px;
+  }
+
+  .dashboard.analog-mode .clock span b {
+    font-size: 2.4rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .dashboard.analog-mode .clock-card .clock {
+    width: 540px;
+    height: 540px;
+  }
+}
+
+.dashboard.digital-mode .clock-card #time {
+  padding: 1rem 2rem;
+  font-size: 3rem;
+  border-radius: 80px;
+}
+
+.dashboard.digital-mode .clock-card #time div {
+  width: 100px;
+  font-size: 3rem;
+}
+
+.dashboard.digital-mode .clock-card #time div:last-child {
+  font-size: 1.2rem;
+}
+
+@media (min-width: 700px) {
+  .dashboard.digital-mode .clock-card #time {
+    font-size: 4rem;
+    padding: 1.5rem 3rem;
+  }
+
+  .dashboard.digital-mode .clock-card #time div {
+    width: 130px;
+    font-size: 4rem;
+  }
+
+  .dashboard.digital-mode .clock-card #time div:last-child {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .dashboard.digital-mode .clock-card #time {
+    font-size: 5rem;
+    padding: 2rem 4rem;
+  }
+
+  .dashboard.digital-mode .clock-card #time div {
+    width: 160px;
+    font-size: 5rem;
+  }
+
+  .dashboard.digital-mode .clock-card #time div:last-child {
+    font-size: 1.8rem;
+  }
+}
+
+.dashboard.clock-mode .clock-card .clock {
+  width: 300px;
+  height: 300px;
+}
+
+.dashboard.clock-mode .clock-card #time {
+  font-size: 1.8rem;
+  padding: 0.7rem 1.5rem;
+}
+
+.dashboard.clock-mode .clock-card #time div {
+  width: 65px;
+}
+
+@media (min-width: 700px) {
+  .dashboard.clock-mode .clock-card .clock {
+    width: 360px;
+    height: 360px;
+  }
+
+  .dashboard.clock-mode .clock-card #time {
+    font-size: 2rem;
+  }
+
+  .dashboard.clock-mode .clock-card #time div {
+    width: 75px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .dashboard.clock-mode .clock-card .clock {
+    width: 400px;
+    height: 400px;
+  }
+
+  .dashboard.clock-mode .clock-card #time {
+    font-size: 2.2rem;
+  }
+
+  .dashboard.clock-mode .clock-card #time div {
+    width: 85px;
+  }
+}
+
+.dashboard.analog-mode .main-content .timer-panel,
+.dashboard.digital-mode .main-content .timer-panel,
+.dashboard.clock-mode .main-content .timer-panel {
+  display: none;
+}
+
+.dashboard.timer-mode .main-content .clock-card {
+  display: none;
+}
+
+.dashboard.timer-mode .main-content .timer-panel {
+  width: 100%;
+  flex: 1;
+}
+
+.hide-analog .clock {
+  display: none;
+}
+
+.hide-digital #time {
+  display: none;
+}
+
+.duration-row.hidden {
+  display: none !important;
+}
+
+/* Active view button styling */
+.mode-switch .view-option.active {
+  background-color: #f59e0b !important;
+  color: #0f172a !important;
+}
+
+.light .mode-switch .view-option.active {
+  background-color: #f59e0b !important;
+  color: #0f172a !important;
+}
+
+.progress-fill {
+  transition: width 0.2s linear;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ===== FULLSCREEN AUTO‑HIDE (improved – no distortion) ===== */
+.fullscreen-enabled .mode-switch {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.fullscreen-enabled.hide-controls .mode-switch {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+
+/* Stretch clock or timer when controls are hidden */
+.fullscreen-enabled.hide-controls .main-content {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Analog & Standard views: enlarge clock */
+.fullscreen-enabled.hide-controls.dashboard.analog-mode .clock-card .clock,
+.fullscreen-enabled.hide-controls.dashboard.clock-mode .clock-card .clock {
+  width: min(75vh, 75vw);
+  height: min(75vh, 75vw);
+}
+
+/* Digital view: enlarge digital time */
+.fullscreen-enabled.hide-controls.dashboard.digital-mode .clock-card #time {
+  font-size: 8rem;
+  padding: 2rem 4rem;
+}
+
+/* Split view: keep both visible but enlarge proportionally */
+.fullscreen-enabled.hide-controls.dashboard:not(.analog-mode):not(
+    .digital-mode
+  ):not(.clock-mode):not(.timer-mode)
+  .clock-card
+  .clock {
+  width: min(45vh, 45vw);
+  height: min(45vh, 45vw);
+}
+
+.fullscreen-enabled.hide-controls.dashboard:not(.analog-mode):not(
+    .digital-mode
+  ):not(.clock-mode):not(.timer-mode)
+  .clock-card
+  #time {
+  font-size: 4rem;
+}
+
+/* Timer Focus (timer-mode): enlarge timer display */
+.fullscreen-enabled.hide-controls.dashboard.timer-mode
+  .timer-panel
+  .big-remaining
+  #remainingDisplay {
+  font-size: 6rem;
+}
+
+.fullscreen-enabled.hide-controls.dashboard.timer-mode
+  .timer-panel
+  .progress-wrapper,
+.fullscreen-enabled.hide-controls.dashboard.timer-mode .timer-panel .info-grid,
+.fullscreen-enabled.hide-controls.dashboard.timer-mode
+  .timer-panel
+  .duration-row,
+.fullscreen-enabled.hide-controls.dashboard.timer-mode
+  .timer-panel
+  .action-buttons,
+.fullscreen-enabled.hide-controls.dashboard.timer-mode .timer-panel .status-msg,
+.fullscreen-enabled.hide-controls.dashboard.timer-mode
+  .timer-panel
+  .timer-header {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+/* Ensure timer display remains fully visible */
+.fullscreen-enabled.hide-controls.dashboard.timer-mode
+  .timer-panel
+  .big-remaining {
+  opacity: 1;
+}
+
+/* ===== LIGHT THEME (revamped) ===== */
+.light {
+  --bg-light: #f8fafc;
+  --panel-light: #ffffff;
+  --card-light: #f1f5f9;
+}
+
+.light body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.light .bg-bg-dark {
+  background-color: #f8fafc;
+}
+
+.light .bg-panel {
+  background-color: #ffffff;
+}
+
+.light .bg-card {
+  background-color: #f1f5f9;
+}
+
+.light .text-slate-200,
+.light .text-slate-300,
+.light .text-white {
+  color: #1e293b;
+}
+
+.light .shadow-neumorph-dark {
+  box-shadow:
+    10px 10px 25px rgba(0, 0, 0, 0.05),
+    -5px -5px 15px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.light .shadow-neumorph-light {
+  box-shadow:
+    5px 5px 15px rgba(0, 0, 0, 0.05),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.light .bg-slate-800 {
+  background-color: #e2e8f0;
+}
+
+.light .bg-slate-900 {
+  background-color: #cbd5e1;
+}
+
+.light .bg-slate-700 {
+  background-color: #f1f5f9;
+}
+
+.light .border-black\/50 {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.light .text-accent-minute {
+  color: #b45309;
+}
+
+.light .bg-accent-hour {
+  background-color: #f43f5e;
+}
+
+.light .bg-accent-minute {
+  background-color: #eab308;
+}
+
+.light .bg-accent-second {
+  background-color: #10b981;
+}
+
+.light .hover\:bg-rose-600:hover {
+  background-color: #e11d48;
+}
+
+.light .hover\:bg-yellow-400:hover {
+  background-color: #facc15;
+}
+
+.light .hover\:bg-emerald-400:hover {
+  background-color: #34d399;
+}
+
+.light .clock span b {
+  color: #334155;
+}
+
+.light .clock::before {
+  background-color: #1e293b;
+  border-color: #fff;
+}
+
+.light .circle {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light .info-card {
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.light .duration-row .dur-group {
+  background-color: #e2e8f0;
+}
+
+.light .duration-row input {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.light .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+}
+
+.light .status-msg {
+  background-color: #f1f5f9;
+  color: #b45309;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}

@@ -4,44 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="description" content="Smart Clock — a sleek, exam-ready timer with analog & digital modes and intelligent auto-hide controls.">
-  <title>Smart Clock | Focused Exam Timer</title>
+  <meta name="description" content="Smart Clock — a customizable focus timer with analog & digital displays, configurable context, and intelligent fullscreen auto‑hide.">
+  <title>Smart Clock | Focus Timer</title>
 
-  <!-- Tailwind CSS + Custom Theme -->
+  <!-- Tailwind CSS + Theme Configuration -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            'bg-base': '#0b0f19',
-            'glass-dark': 'rgba(20, 30, 45, 0.7)',
-            'glass-light': 'rgba(255, 255, 255, 0.05)',
-            'accent-hour': '#ff4d6d',
-            'accent-minute': '#ffd60a',
-            'accent-second': '#00f5d4',
-            'accent-glow': '#faa307',
+            'bg-dark': '#0f172a',
+            'panel-dark': '#1e293b',
+            'card-dark': '#334155',
+            'accent-hour': '#f43f5e',
+            'accent-minute': '#eab308',
+            'accent-second': '#10b981',
+            'accent-glow': '#f59e0b',
           },
           fontFamily: {
-            'sans': ['Inter', 'system-ui', 'sans-serif'],
-            'mono': ['JetBrains Mono', 'monospace'],
+            'mono': ['"JetBrains Mono"', 'monospace'],
           },
-          backdropBlur: {
-            xs: '2px',
+          boxShadow: {
+            'neumorph-dark': '25px 25px 75px rgba(0,0,0,0.75), 10px 10px 70px rgba(0,0,0,0.25), inset 5px 5px 10px rgba(0,0,0,0.5), inset 5px 5px 20px rgba(255,255,255,0.2), inset -5px -5px 15px rgba(0,0,0,0.75)',
+            'neumorph-light': '5px 5px 10px rgba(0,0,0,0.5), inset 5px 5px 20px rgba(255,255,255,0.2), inset -5px -5px 15px rgba(0,0,0,0.75)',
+            'inner-progress': 'inset 0 0 8px #00000055, 0 6px 12px rgba(0,0,0,0.3)',
           },
-          animation: {
-            'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
-          },
-          keyframes: {
-            'pulse-glow': {
-              '0%, 100%': {
-                boxShadow: '0 0 20px rgba(255,214,10,0.3)'
-              },
-              '50%': {
-                boxShadow: '0 0 40px rgba(255,214,10,0.6)'
-              },
-            }
-          }
         }
       }
     }
@@ -53,344 +42,24 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* ===== CLOCK MECHANICS (Preserved for JS) ===== */
-    .circle {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      z-index: 10;
-    }
-
-    .circle i {
-      position: absolute;
-      width: 4px;
-      height: 50%;
-      background: var(--clr);
-      opacity: 0.9;
-      transform-origin: bottom;
-      transform: scaleY(0.5);
-      border-radius: 4px;
-      box-shadow: 0 0 12px var(--clr);
-    }
-
-    .circle:nth-child(1) i {
-      width: 2px;
-    }
-
-    .circle:nth-child(2) i {
-      width: 5px;
-    }
-
-    .circle2 {
-      width: 170px;
-      height: 170px;
-      z-index: 9;
-    }
-
-    .circle3 {
-      width: 135px;
-      height: 135px;
-      z-index: 8;
-    }
-
-    .circle::before {
-      content: "";
-      position: absolute;
-      top: -8px;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--clr);
-      box-shadow: 0 0 20px var(--clr);
-    }
-
-    .clock span {
-      position: absolute;
-      inset: 20px;
-      color: #fff;
-      text-align: center;
-      transform: rotate(calc(30deg * var(--i)));
-    }
-
-    .clock span b {
-      font-size: 1.3rem;
-      opacity: 0.4;
-      font-weight: 500;
-      display: inline-block;
-      transform: rotate(calc(-30deg * var(--i)));
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-    }
-
-    /* Digital colon animation */
-    @keyframes animate {
-      0% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0;
-      }
-    }
-
-    #time div:nth-child(2)::after {
-      content: ":";
-      position: absolute;
-      right: -4px;
-      color: rgba(255, 255, 255, 0.6);
-      animation: animate 1s steps(1) infinite;
-    }
-
-    #time div:nth-child(1)::after {
-      content: ":";
-      position: absolute;
-      right: -4px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    /* ===== AUTO‑HIDE TIMER CONTROLS (Pure CSS) ===== */
-    .timer-panel {
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
-    }
-
-    /* When not hovered, reduce opacity and scale down slightly (but keep interactive) */
-    .timer-panel:not(:hover) {
-      opacity: 0.75;
-      transform: scale(0.98);
-    }
-
-    /* On hover, bring to full prominence */
-    .timer-panel:hover {
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 25px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 0, 0.2);
-    }
-
-    /* Optional: make the progress bar and remaining time always prominent */
-    .timer-panel:not(:hover) .big-remaining {
-      filter: brightness(1.2);
-    }
-
-    /* ===== VIEW MODE OVERRIDES (required by view.js) ===== */
-    .dashboard.analog-mode .clock-card .clock {
-      width: 420px;
-      height: 420px;
-    }
-
-    .dashboard.analog-mode .clock span b {
-      font-size: 2rem;
-    }
-
-    @media (min-width: 700px) {
-      .dashboard.analog-mode .clock-card .clock {
-        width: 480px;
-        height: 480px;
-      }
-
-      .dashboard.analog-mode .clock span b {
-        font-size: 2.4rem;
-      }
-    }
-
-    @media (min-width: 1000px) {
-      .dashboard.analog-mode .clock-card .clock {
-        width: 540px;
-        height: 540px;
-      }
-    }
-
-    .dashboard.digital-mode .clock-card #time {
-      padding: 1.5rem 2.5rem;
-      font-size: 3.5rem;
-      border-radius: 100px;
-    }
-
-    .dashboard.digital-mode .clock-card #time div {
-      width: 110px;
-      font-size: 3.5rem;
-    }
-
-    .dashboard.digital-mode .clock-card #time div:last-child {
-      font-size: 1.4rem;
-    }
-
-    @media (min-width: 700px) {
-      .dashboard.digital-mode .clock-card #time {
-        font-size: 4.5rem;
-        padding: 2rem 3.5rem;
-      }
-
-      .dashboard.digital-mode .clock-card #time div {
-        width: 140px;
-        font-size: 4.5rem;
-      }
-
-      .dashboard.digital-mode .clock-card #time div:last-child {
-        font-size: 1.8rem;
-      }
-    }
-
-    @media (min-width: 1000px) {
-      .dashboard.digital-mode .clock-card #time {
-        font-size: 5.5rem;
-        padding: 2.5rem 4.5rem;
-      }
-
-      .dashboard.digital-mode .clock-card #time div {
-        width: 170px;
-        font-size: 5.5rem;
-      }
-
-      .dashboard.digital-mode .clock-card #time div:last-child {
-        font-size: 2rem;
-      }
-    }
-
-    .dashboard.clock-mode .clock-card .clock {
-      width: 320px;
-      height: 320px;
-    }
-
-    .dashboard.clock-mode .clock-card #time {
-      font-size: 1.8rem;
-      padding: 0.8rem 1.8rem;
-    }
-
-    .dashboard.clock-mode .clock-card #time div {
-      width: 70px;
-    }
-
-    @media (min-width: 700px) {
-      .dashboard.clock-mode .clock-card .clock {
-        width: 380px;
-        height: 380px;
-      }
-
-      .dashboard.clock-mode .clock-card #time {
-        font-size: 2rem;
-      }
-
-      .dashboard.clock-mode .clock-card #time div {
-        width: 80px;
-      }
-    }
-
-    @media (min-width: 1000px) {
-      .dashboard.clock-mode .clock-card .clock {
-        width: 440px;
-        height: 440px;
-      }
-
-      .dashboard.clock-mode .clock-card #time {
-        font-size: 2.2rem;
-      }
-
-      .dashboard.clock-mode .clock-card #time div {
-        width: 90px;
-      }
-    }
-
-    /* Visibility toggles (used by view.js) */
-    .dashboard.analog-mode .main-content .timer-panel,
-    .dashboard.digital-mode .main-content .timer-panel,
-    .dashboard.clock-mode .main-content .timer-panel {
-      display: none;
-    }
-
-    .dashboard.timer-mode .main-content .clock-card {
-      display: none;
-    }
-
-    .dashboard.timer-mode .main-content .timer-panel {
-      width: 100%;
-      flex: 1;
-    }
-
-    .hide-analog .clock {
-      display: none;
-    }
-
-    .hide-digital #time {
-      display: none;
-    }
-
-    /* Duration row hide (timer.js) */
-    .duration-row.hidden {
-      display: none !important;
-    }
-
-    /* Active view button styling (enhanced for modern look) */
-    .mode-switch .view-option {
-      backdrop-filter: blur(12px);
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.2s ease;
-    }
-
-    .mode-switch .view-option:hover {
-      background: rgba(51, 65, 85, 0.7);
-      border-color: rgba(255, 215, 0, 0.3);
-    }
-
-    .mode-switch .view-option.active {
-      background: #faa307 !important;
-      color: #0b0f19 !important;
-      border-color: #faa307;
-      box-shadow: 0 0 20px rgba(250, 163, 7, 0.4);
-      font-weight: 600;
-    }
-
-    /* Progress fill transition */
-    .progress-fill {
-      transition: width 0.25s ease-out;
-    }
-
-    /* Button disabled states */
-    .btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none !important;
-      filter: grayscale(0.5);
-    }
-
-    /* Glassmorphism enhancements */
-    .glass-card {
-      background: rgba(20, 30, 45, 0.6);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    /* Clock always stands out */
-    .clock-card {
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.2));
-      box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 0, 0.1), inset 0 0 40px rgba(0, 0, 0, 0.3);
-    }
-  </style>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body class="bg-bg-base font-sans flex justify-center items-center min-h-screen p-4 antialiased text-white">
-  <!-- Subtle animated background gradient -->
-  <div class="fixed inset-0 bg-gradient-to-br from-indigo-950/30 via-slate-900/20 to-amber-950/30 -z-10"></div>
-
+<body class="bg-bg-dark font-['Inter'] flex justify-center items-center min-h-screen p-4 antialiased">
   <div class="dashboard flex flex-col max-w-7xl w-full min-h-[90vh]" id="dashboard">
 
     <!-- Main Content -->
     <div class="main-content flex-1 flex flex-wrap justify-center items-center gap-8 p-4">
 
-      <!-- Clock Card – Always the star -->
-      <div class="clock-card glass-card rounded-[3rem] flex flex-col items-center justify-center p-8 min-w-[300px] flex-[1.5] transition-all duration-500" id="clockCard">
+      <!-- Clock Card -->
+      <div class="clock-card bg-panel rounded-tl-[225px] rounded-tr-[225px] rounded-bl-2xl rounded-br-2xl shadow-neumorph-dark flex flex-col items-center justify-center p-8 min-w-[280px] flex-[1.2] transition-all duration-200" id="clockCard">
 
         <!-- Analog Clock -->
-        <div class="clock relative w-80 h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem] rounded-full flex justify-center items-center mb-8 before:content-[''] before:absolute before:w-4 before:h-4 before:bg-white/20 before:backdrop-blur-sm before:border-2 before:border-white/40 before:rounded-full before:z-[1000] before:shadow-[0_0_20px_#faa307]" id="analogClock" aria-label="Analog clock">
-          <div class="circle" id="sc" style="--clr:#00f5d4;"><i></i></div>
-          <div class="circle circle2" id="mn" style="--clr:#ffd60a;"><i></i></div>
-          <div class="circle circle3" id="hr" style="--clr:#ff4d6d;"><i></i></div>
+        <div class="clock relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-panel rounded-full shadow-[10px_50px_70px_rgba(0,0,0,0.25),inset_5px_5px_10px_rgba(0,0,0,0.5),inset_5px_5px_20px_rgba(255,255,255,0.2),inset_-5px_5px_15px_rgba(0,0,0,0.75)] flex justify-center items-center mb-6 before:content-[''] before:absolute before:w-3 before:h-3 before:bg-panel before:border-[3px] before:border-white before:rounded-full before:z-[1000]" id="analogClock" aria-label="Analog clock">
+          <div class="circle" id="sc" style="--clr:#10b981;"><i></i></div>
+          <div class="circle circle2" id="mn" style="--clr:#eab308;"><i></i></div>
+          <div class="circle circle3" id="hr" style="--clr:#f43f5e;"><i></i></div>
           <span style="--i:1;"><b>1</b></span> <span style="--i:2;"><b>2</b></span>
           <span style="--i:3;"><b>3</b></span> <span style="--i:4;"><b>4</b></span>
           <span style="--i:5;"><b>5</b></span> <span style="--i:6;"><b>6</b></span>
@@ -400,112 +69,152 @@
         </div>
 
         <!-- Digital Clock -->
-        <div id="time" class="flex py-3 px-6 text-3xl font-semibold border border-white/10 rounded-[60px] backdrop-blur-md bg-black/20 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]" aria-label="Digital clock">
-          <div id="hours" class="relative w-[65px] font-medium text-center text-accent-hour drop-shadow-[0_0_10px_#ff4d6d]">00</div>
-          <div id="minutes" class="relative w-[65px] font-medium text-center text-accent-minute drop-shadow-[0_0_10px_#ffd60a]">00</div>
-          <div id="seconds" class="relative w-[65px] font-medium text-center text-accent-second drop-shadow-[0_0_10px_#00f5d4]">00</div>
-          <div id="ampm" class="text-base flex justify-center items-center text-white/70 ml-1">AM</div>
+        <div id="time" class="flex py-2 px-5 text-2xl font-semibold border-2 border-black/50 rounded-[40px] shadow-neumorph-light bg-panel" aria-label="Digital clock">
+          <div id="hours" class="relative w-[55px] font-medium text-center text-accent-hour">00</div>
+          <div id="minutes" class="relative w-[55px] font-medium text-center text-accent-minute">00</div>
+          <div id="seconds" class="relative w-[55px] font-medium text-center text-accent-second">00</div>
+          <div id="ampm" class="text-sm flex justify-center items-center text-slate-200">AM</div>
         </div>
       </div>
 
-      <!-- Timer Panel – Auto‑hiding controls -->
-      <div class="timer-panel glass-card rounded-[3rem] p-7 flex-1 min-w-[300px] transition-all duration-500" role="region" aria-label="Exam timer controls">
+      <!-- Timer Panel -->
+      <div class="timer-panel bg-panel rounded-[2rem] p-7 shadow-neumorph-dark flex-1 min-w-[280px]" role="region" aria-label="Timer controls">
 
-        <div class="timer-header text-center mb-6">
-          <h2 class="text-2xl font-semibold bg-gradient-to-r from-accent-minute via-accent-glow to-accent-hour bg-clip-text text-transparent tracking-tight">
-            <i class="fas fa-hourglass-half mr-2"></i>EXAM CONTROL
+        <!-- Header with settings button -->
+        <div class="timer-header flex items-center justify-between mb-4">
+          <h2 id="timerContextHeading" class="text-2xl font-semibold bg-gradient-to-br from-accent-minute to-accent-glow bg-clip-text text-transparent tracking-tight">
+            <i class="fas fa-clock mr-2"></i><span id="contextDisplay">EXAM CONTROL</span>
           </h2>
+          <button id="settingsBtn" class="text-white/70 hover:text-white transition" title="Settings">
+            <i class="fas fa-cog text-xl"></i>
+          </button>
         </div>
 
-        <!-- Always visible: remaining time -->
-        <div class="big-remaining bg-black/30 backdrop-blur-sm rounded-[3rem] py-4 px-3 text-center mb-5 border border-white/5 shadow-inner">
-          <span id="remainingDisplay" class="font-mono text-5xl md:text-6xl font-bold text-accent-minute drop-shadow-[0_0_20px_#faa307] tracking-wider" aria-live="polite">00:00:00</span>
+        <!-- Custom details row (subject, etc.) -->
+        <div id="customDetails" class="mb-4 text-center">
+          <div id="subjectDisplay" class="text-sm text-slate-300 font-medium"></div>
+          <div id="notesDisplay" class="text-xs text-slate-400 italic"></div>
+        </div>
+
+        <!-- Remaining Time -->
+        <div class="big-remaining bg-slate-800 rounded-[2rem] py-3 px-2 text-center mb-4 shadow-inner-progress">
+          <span id="remainingDisplay" class="font-mono text-4xl md:text-5xl font-bold text-accent-minute drop-shadow-[0_0_6px_#f59e0b] tracking-wider" aria-live="polite">00:00:00</span>
         </div>
 
         <!-- Progress Bar -->
-        <div class="progress-wrapper my-5">
-          <div class="progress-bar-bg bg-black/40 rounded-full h-3 overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
-            <div class="progress-fill w-0 h-full bg-gradient-to-r from-accent-hour via-accent-glow to-accent-minute rounded-full" id="progressFill" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-wrapper my-4">
+          <div class="progress-bar-bg bg-slate-700 rounded-[30px] h-2.5 overflow-hidden shadow-[inset_0_1px_3px_black]">
+            <div class="progress-fill w-0 h-full bg-gradient-to-r from-accent-hour to-accent-minute rounded-[30px]" id="progressFill" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
-          <div class="progress-percent text-right text-sm text-accent-minute mt-2 font-medium" id="progressPercent">0%</div>
+          <div class="progress-percent text-right text-xs text-accent-minute mt-1 font-medium" id="progressPercent">0%</div>
         </div>
 
-        <!-- Info Cards (compact grid) -->
-        <div class="info-grid grid grid-cols-3 gap-3 my-5">
-          <div class="info-card bg-black/20 backdrop-blur-sm rounded-2xl py-3 px-2 text-center border border-white/5">
-            <div class="info-label text-[0.7rem] uppercase tracking-wider text-white/50"><i class="far fa-clock mr-1"></i>TOTAL</div>
+        <!-- Info Cards -->
+        <div class="info-grid flex flex-wrap gap-3 justify-between my-5">
+          <div class="info-card bg-card rounded-2xl py-2 px-3 text-center flex-1 min-w-[80px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.4),0_2px_5px_rgba(0,0,0,0.2)]">
+            <div class="info-label text-xs uppercase tracking-wider text-slate-300"><i class="far fa-hourglass mr-1"></i>TOTAL</div>
             <div class="info-value text-base font-semibold font-mono text-accent-minute" id="infoDuration">--:--:--</div>
           </div>
-          <div class="info-card bg-black/20 backdrop-blur-sm rounded-2xl py-3 px-2 text-center border border-white/5">
-            <div class="info-label text-[0.7rem] uppercase tracking-wider text-white/50"><i class="fas fa-play mr-1"></i>START</div>
+          <div class="info-card bg-card rounded-2xl py-2 px-3 text-center flex-1 min-w-[80px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.4),0_2px_5px_rgba(0,0,0,0.2)]">
+            <div class="info-label text-xs uppercase tracking-wider text-slate-300"><i class="fas fa-play mr-1"></i>START</div>
             <div class="info-value text-base font-semibold font-mono text-accent-minute" id="infoStart">--:--:--</div>
           </div>
-          <div class="info-card bg-black/20 backdrop-blur-sm rounded-2xl py-3 px-2 text-center border border-white/5">
-            <div class="info-label text-[0.7rem] uppercase tracking-wider text-white/50"><i class="fas fa-flag-checkered mr-1"></i>FINISH</div>
+          <div class="info-card bg-card rounded-2xl py-2 px-3 text-center flex-1 min-w-[80px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.4),0_2px_5px_rgba(0,0,0,0.2)]">
+            <div class="info-label text-xs uppercase tracking-wider text-slate-300"><i class="fas fa-flag-checkered mr-1"></i>FINISH</div>
             <div class="info-value text-base font-semibold font-mono text-accent-minute" id="infoEnd">--:--:--</div>
           </div>
         </div>
 
-        <!-- Duration Inputs (hidden when timer runs) -->
-        <div class="duration-row flex flex-wrap gap-3 items-center justify-center bg-black/20 backdrop-blur-sm rounded-full py-3 px-5 my-5 border border-white/5" id="durationRow">
-          <div class="dur-group bg-slate-900/50 rounded-full py-1.5 px-5 inline-flex items-center gap-3 backdrop-blur-sm">
-            <label for="durationMins" class="text-xs text-white/60"><i class="far fa-clock mr-1"></i>min</label>
-            <input type="number" id="durationMins" class="dur-input bg-transparent border-0 py-1.5 px-2 rounded-full text-accent-minute w-20 text-center font-semibold font-mono text-lg focus:ring-2 focus:ring-accent-minute/50 outline-none" value="90" min="1" max="720" step="1">
+        <!-- Duration Inputs -->
+        <div class="duration-row flex flex-wrap gap-3 items-center justify-center bg-card rounded-[3rem] py-2 px-4 my-4" id="durationRow">
+          <div class="dur-group bg-slate-900 rounded-[2rem] py-1 px-4 inline-flex items-center gap-2">
+            <label for="durationMins" class="text-xs text-slate-300"><i class="far fa-clock mr-1"></i>min</label>
+            <input type="number" id="durationMins" class="dur-input bg-slate-800 border-0 py-1.5 px-2.5 rounded-[2rem] text-accent-minute w-[70px] text-center font-semibold font-mono focus:ring-2 focus:ring-accent-minute/50 outline-none" value="90" min="1" max="720" step="1">
           </div>
-          <div class="dur-group bg-slate-900/50 rounded-full py-1.5 px-5 inline-flex items-center gap-3 backdrop-blur-sm">
-            <label for="durationSecs" class="text-xs text-white/60"><i class="far fa-clock mr-1"></i>sec</label>
-            <input type="number" id="durationSecs" class="dur-input bg-transparent border-0 py-1.5 px-2 rounded-full text-accent-minute w-20 text-center font-semibold font-mono text-lg focus:ring-2 focus:ring-accent-minute/50 outline-none" value="0" min="0" max="59" step="1">
+          <div class="dur-group bg-slate-900 rounded-[2rem] py-1 px-4 inline-flex items-center gap-2">
+            <label for="durationSecs" class="text-xs text-slate-300"><i class="far fa-clock mr-1"></i>sec</label>
+            <input type="number" id="durationSecs" class="dur-input bg-slate-800 border-0 py-1.5 px-2.5 rounded-[2rem] text-accent-minute w-[70px] text-center font-semibold font-mono focus:ring-2 focus:ring-accent-minute/50 outline-none" value="0" min="0" max="59" step="1">
           </div>
-          <button id="setDurationBtn" class="btn btn-primary bg-accent-hour text-white border-0 py-2.5 px-6 rounded-full font-semibold cursor-pointer transition-all active:scale-95 shadow-lg hover:bg-rose-500 hover:shadow-accent-hour/30">
+          <button id="setDurationBtn" class="btn btn-primary bg-accent-hour text-white border-0 py-2.5 px-5 rounded-[2rem] font-semibold cursor-pointer transition-all active:scale-95 shadow-md hover:bg-rose-600">
             <i class="fas fa-sync-alt mr-1"></i>Update
           </button>
         </div>
 
         <!-- Action Buttons -->
-        <div class="action-buttons flex gap-4 justify-center my-6">
-          <button id="startTimerBtn" class="btn btn-primary bg-accent-hour text-white border-0 py-3 px-6 rounded-full font-semibold cursor-pointer transition-all active:scale-95 shadow-lg hover:bg-rose-500 hover:shadow-accent-hour/30">
-            <i class="fas fa-play mr-2"></i>START
+        <div class="action-buttons flex gap-4 justify-center my-5">
+          <button id="startTimerBtn" class="btn btn-primary bg-accent-hour text-white border-0 py-2.5 px-5 rounded-[2rem] font-semibold cursor-pointer transition-all active:scale-95 shadow-md hover:bg-rose-600">
+            <i class="fas fa-play mr-1"></i>START
           </button>
-          <button id="pauseTimerBtn" class="btn btn-warning bg-accent-minute text-slate-900 border-0 py-3 px-6 rounded-full font-semibold cursor-pointer transition-all active:scale-95 shadow-lg hover:bg-yellow-400">
-            <i class="fas fa-pause mr-2"></i>PAUSE
+          <button id="pauseTimerBtn" class="btn btn-warning bg-accent-minute text-slate-900 border-0 py-2.5 px-5 rounded-[2rem] font-semibold cursor-pointer transition-all active:scale-95 shadow-md hover:bg-yellow-400">
+            <i class="fas fa-pause mr-1"></i>PAUSE
           </button>
-          <button id="resetTimerBtn" class="btn btn-danger bg-accent-second text-slate-900 border-0 py-3 px-6 rounded-full font-semibold cursor-pointer transition-all active:scale-95 shadow-lg hover:bg-emerald-400">
-            <i class="fas fa-undo-alt mr-2"></i>RESET
+          <button id="resetTimerBtn" class="btn btn-danger bg-accent-second text-slate-900 border-0 py-2.5 px-5 rounded-[2rem] font-semibold cursor-pointer transition-all active:scale-95 shadow-md hover:bg-emerald-400">
+            <i class="fas fa-undo-alt mr-1"></i>RESET
           </button>
         </div>
 
         <!-- Status Message -->
-        <div class="status-msg bg-black/40 backdrop-blur-sm text-center py-3 px-5 rounded-full text-sm text-accent-minute mt-4 border border-white/5" id="statusMsg" role="status" aria-live="polite">
-          <i class="fas fa-cog mr-2"></i>Ready to begin
+        <div class="status-msg bg-slate-900 text-center py-2 px-4 rounded-[2rem] text-xs text-accent-minute mt-4" id="statusMsg" role="status" aria-live="polite">
+          <i class="fas fa-cog mr-1"></i>Ready to begin
         </div>
       </div>
     </div>
 
-    <!-- Mode Switch (always accessible, glass) -->
-    <div class="mode-switch w-full flex justify-center gap-2.5 flex-wrap py-4 mt-auto">
-      <button class="view-option border-0 py-2 px-5 rounded-full text-sm font-medium cursor-pointer transition-all" data-view="classic" aria-label="Classic mode: analog clock only">
+    <!-- Mode Switch -->
+    <div class="mode-switch w-full flex justify-center gap-2.5 flex-wrap py-3 mt-auto">
+      <button class="view-option bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" data-view="classic" aria-label="Classic mode: analog clock only">
         <i class="far fa-clock mr-1"></i>Classic
       </button>
-      <button class="view-option border-0 py-2 px-5 rounded-full text-sm font-medium cursor-pointer transition-all" data-view="modern" aria-label="Modern mode: digital clock only">
+      <button class="view-option bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" data-view="modern" aria-label="Modern mode: digital clock only">
         <i class="fas fa-digital-tiling mr-1"></i>Modern
       </button>
-      <button class="view-option border-0 py-2 px-5 rounded-full text-sm font-medium cursor-pointer transition-all" data-view="standard" aria-label="Standard mode: both clocks">
+      <button class="view-option bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" data-view="standard" aria-label="Standard mode: both clocks">
         <i class="fas fa-table-cells mr-1"></i>Standard
       </button>
-      <button class="view-option active border-0 py-2 px-5 rounded-full text-sm font-medium cursor-pointer transition-all" data-view="split" aria-label="Split view: clocks and timer">
+      <button class="view-option bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" data-view="split" aria-label="Split view: clocks and timer">
         <i class="fas fa-columns mr-1"></i>Split View
       </button>
-      <button class="view-option border-0 py-2 px-5 rounded-full text-sm font-medium cursor-pointer transition-all" data-view="exam" aria-label="Exam focus: timer only">
-        <i class="fas fa-pencil-alt mr-1"></i>Exam Focus
+      <button class="view-option bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" data-view="timerfocus" aria-label="Timer focus: timer only">
+        <i class="fas fa-pencil-alt mr-1"></i>Timer Focus
       </button>
-      <button class="fullscreen-btn border-0 py-2 px-5 rounded-full text-sm font-medium cursor-pointer transition-all backdrop-blur-md bg-slate-800/30 border border-white/10 hover:bg-slate-700/50" id="fullscreenBtn" title="Toggle full screen">
+      <button class="theme-toggle bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" id="themeToggle" title="Toggle light/dark theme">
+        <i class="fas fa-sun mr-1"></i>Light
+      </button>
+      <button class="fullscreen-btn bg-slate-700 border-0 py-1.5 px-3 rounded-[40px] text-xs font-medium text-slate-200 cursor-pointer transition hover:bg-slate-600" id="fullscreenBtn" title="Toggle full screen">
         ⛶ Fullscreen
       </button>
     </div>
   </div>
 
-  <!-- JavaScript Modules (completely unchanged) -->
-  <script type="module" src="js/main.js"></script>
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 flex items-center justify-center z-50 hidden transition-opacity">
+    <div class="modal-backdrop absolute inset-0" id="modalBackdrop"></div>
+    <div class="bg-panel rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl relative z-10 border border-white/10">
+      <h3 class="text-2xl font-bold mb-6 text-white flex items-center">
+        <i class="fas fa-sliders-h mr-3 text-accent-minute"></i>Timer Settings
+      </h3>
+      <div class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Context / Title</label>
+          <input type="text" id="contextInput" placeholder="e.g., Exam, Workout, Coding" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-white focus:ring-2 focus:ring-accent-minute outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Subject / Topic</label>
+          <input type="text" id="subjectInput" placeholder="e.g., Mathematics, Project Alpha" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-white focus:ring-2 focus:ring-accent-minute outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Notes</label>
+          <textarea id="notesInput" rows="2" placeholder="Additional notes..." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-white focus:ring-2 focus:ring-accent-minute outline-none"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 mt-8">
+        <button id="closeSettingsBtn" class="px-5 py-2 rounded-full bg-slate-700 text-white hover:bg-slate-600 transition">Cancel</button>
+        <button id="saveSettingsBtn" class="px-5 py-2 rounded-full bg-accent-minute text-slate-900 font-semibold hover:bg-yellow-400 transition">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 
 </html>
