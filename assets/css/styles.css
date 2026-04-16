@@ -1,4 +1,139 @@
-/* ===== CLOCK MECHANICS ===== */
+/* =========================================================
+   BASE RESET + SAFETY
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   RESPONSIVE ENHANCEMENTS (SAFE)
+========================================================= */
+
+/* CLOCK */
+.clock {
+  width: clamp(240px, 70vw, 420px);
+  height: clamp(240px, 70vw, 420px);
+}
+
+@media (min-width: 1024px) {
+  .clock {
+    width: 384px;
+    height: 384px;
+  }
+}
+
+.clock span b {
+  font-size: clamp(0.9rem, 2.5vw, 1.6rem);
+}
+
+/* DIGITAL CLOCK */
+#time {
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  padding: 0.6rem 1.2rem;
+}
+
+#time div {
+  width: clamp(45px, 10vw, 70px);
+}
+
+#ampm {
+  font-size: clamp(0.7rem, 2vw, 1rem);
+}
+
+/* TIMER DISPLAY */
+#remainingDisplay {
+  font-size: clamp(2rem, 7vw, 3.5rem);
+}
+
+/* INFO GRID */
+@media (max-width: 600px) {
+  .info-grid {
+    gap: 0.5rem;
+  }
+
+  .info-card {
+    flex: 1 1 45%;
+    min-width: unset;
+  }
+}
+
+/* BUTTONS */
+@media (max-width: 600px) {
+  .action-buttons {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .action-buttons .btn {
+    flex: 1 1 30%;
+    min-width: 90px;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+/* MODE SWITCH */
+@media (max-width: 768px) {
+  .mode-switch {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .mode-switch button {
+    flex: 0 0 auto;
+    font-size: 0.75rem;
+  }
+
+  .mode-switch::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* DURATION */
+@media (max-width: 500px) {
+  .duration-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .dur-input {
+    width: 60px !important;
+  }
+}
+
+/* FULLSCREEN MOBILE */
+@media (max-width: 768px) {
+  .fullscreen-enabled.hide-controls .clock {
+    width: 80vw;
+    height: 80vw;
+  }
+
+  .fullscreen-enabled.hide-controls #time {
+    font-size: 10vw;
+  }
+
+  .fullscreen-enabled.hide-controls #remainingDisplay {
+    font-size: 12vw;
+  }
+}
+
+/* =========================================================
+   CLOCK MECHANICS
+========================================================= */
+
 .circle {
   position: absolute;
   width: 200px;
@@ -62,7 +197,6 @@
 }
 
 .clock span b {
-  font-size: 1.3rem;
   opacity: 0.35;
   font-weight: 600;
   display: inline-block;
@@ -73,7 +207,6 @@
   0% {
     opacity: 1;
   }
-
   50% {
     opacity: 0;
   }
@@ -94,7 +227,10 @@
   color: #ddd;
 }
 
-/* ===== VIEW MODE OVERRIDES ===== */
+/* =========================================================
+   VIEW MODES (CRITICAL FOR JS)
+========================================================= */
+
 .dashboard.analog-mode .clock-card .clock {
   width: 420px;
   height: 420px;
@@ -122,6 +258,7 @@
   }
 }
 
+/* Digital mode */
 .dashboard.digital-mode .clock-card #time {
   padding: 1rem 2rem;
   font-size: 3rem;
@@ -137,38 +274,7 @@
   font-size: 1.2rem;
 }
 
-@media (min-width: 700px) {
-  .dashboard.digital-mode .clock-card #time {
-    font-size: 4rem;
-    padding: 1.5rem 3rem;
-  }
-
-  .dashboard.digital-mode .clock-card #time div {
-    width: 130px;
-    font-size: 4rem;
-  }
-
-  .dashboard.digital-mode .clock-card #time div:last-child {
-    font-size: 1.5rem;
-  }
-}
-
-@media (min-width: 1000px) {
-  .dashboard.digital-mode .clock-card #time {
-    font-size: 5rem;
-    padding: 2rem 4rem;
-  }
-
-  .dashboard.digital-mode .clock-card #time div {
-    width: 160px;
-    font-size: 5rem;
-  }
-
-  .dashboard.digital-mode .clock-card #time div:last-child {
-    font-size: 1.8rem;
-  }
-}
-
+/* Standard mode */
 .dashboard.clock-mode .clock-card .clock {
   width: 300px;
   height: 300px;
@@ -176,54 +282,24 @@
 
 .dashboard.clock-mode .clock-card #time {
   font-size: 1.8rem;
-  padding: 0.7rem 1.5rem;
 }
 
 .dashboard.clock-mode .clock-card #time div {
   width: 65px;
 }
 
-@media (min-width: 700px) {
-  .dashboard.clock-mode .clock-card .clock {
-    width: 360px;
-    height: 360px;
-  }
-
-  .dashboard.clock-mode .clock-card #time {
-    font-size: 2rem;
-  }
-
-  .dashboard.clock-mode .clock-card #time div {
-    width: 75px;
-  }
-}
-
-@media (min-width: 1000px) {
-  .dashboard.clock-mode .clock-card .clock {
-    width: 400px;
-    height: 400px;
-  }
-
-  .dashboard.clock-mode .clock-card #time {
-    font-size: 2.2rem;
-  }
-
-  .dashboard.clock-mode .clock-card #time div {
-    width: 85px;
-  }
-}
-
-.dashboard.analog-mode .main-content .timer-panel,
-.dashboard.digital-mode .main-content .timer-panel,
-.dashboard.clock-mode .main-content .timer-panel {
+/* Visibility rules */
+.dashboard.analog-mode .timer-panel,
+.dashboard.digital-mode .timer-panel,
+.dashboard.clock-mode .timer-panel {
   display: none;
 }
 
-.dashboard.timer-mode .main-content .clock-card {
+.dashboard.timer-mode .clock-card {
   display: none;
 }
 
-.dashboard.timer-mode .main-content .timer-panel {
+.dashboard.timer-mode .timer-panel {
   width: 100%;
   flex: 1;
 }
@@ -231,22 +307,19 @@
 .hide-analog .clock {
   display: none;
 }
-
 .hide-digital #time {
   display: none;
 }
+
+/* =========================================================
+   UI STATES
+========================================================= */
 
 .duration-row.hidden {
   display: none !important;
 }
 
-/* Active view button styling */
 .mode-switch .view-option.active {
-  background-color: #f59e0b !important;
-  color: #0f172a !important;
-}
-
-.light .mode-switch .view-option.active {
   background-color: #f59e0b !important;
   color: #0f172a !important;
 }
@@ -258,10 +331,12 @@
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none !important;
 }
 
-/* ===== FULLSCREEN AUTO‑HIDE (improved – no distortion) ===== */
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
 .fullscreen-enabled .mode-switch {
   transition:
     opacity 0.3s ease,
@@ -274,91 +349,23 @@
   transform: translateY(20px);
 }
 
-/* Stretch clock or timer when controls are hidden */
 .fullscreen-enabled.hide-controls .main-content {
   flex: 1;
   justify-content: center;
   align-items: center;
 }
 
-/* Analog & Standard views: enlarge clock */
-.fullscreen-enabled.hide-controls.dashboard.analog-mode .clock-card .clock,
-.fullscreen-enabled.hide-controls.dashboard.clock-mode .clock-card .clock {
-  width: min(75vh, 75vw);
-  height: min(75vh, 75vw);
-}
-
-/* Digital view: enlarge digital time */
-.fullscreen-enabled.hide-controls.dashboard.digital-mode .clock-card #time {
-  font-size: 8rem;
-  padding: 2rem 4rem;
-}
-
-/* Split view: keep both visible but enlarge proportionally */
-.fullscreen-enabled.hide-controls.dashboard:not(.analog-mode):not(
-    .digital-mode
-  ):not(.clock-mode):not(.timer-mode)
-  .clock-card
-  .clock {
-  width: min(45vh, 45vw);
-  height: min(45vh, 45vw);
-}
-
-.fullscreen-enabled.hide-controls.dashboard:not(.analog-mode):not(
-    .digital-mode
-  ):not(.clock-mode):not(.timer-mode)
-  .clock-card
-  #time {
-  font-size: 4rem;
-}
-
-/* Timer Focus (timer-mode): enlarge timer display */
-.fullscreen-enabled.hide-controls.dashboard.timer-mode
-  .timer-panel
-  .big-remaining
-  #remainingDisplay {
+.fullscreen-enabled.hide-controls.dashboard.timer-mode #remainingDisplay {
   font-size: 6rem;
 }
 
-.fullscreen-enabled.hide-controls.dashboard.timer-mode
-  .timer-panel
-  .progress-wrapper,
-.fullscreen-enabled.hide-controls.dashboard.timer-mode .timer-panel .info-grid,
-.fullscreen-enabled.hide-controls.dashboard.timer-mode
-  .timer-panel
-  .duration-row,
-.fullscreen-enabled.hide-controls.dashboard.timer-mode
-  .timer-panel
-  .action-buttons,
-.fullscreen-enabled.hide-controls.dashboard.timer-mode .timer-panel .status-msg,
-.fullscreen-enabled.hide-controls.dashboard.timer-mode
-  .timer-panel
-  .timer-header {
-  opacity: 0.5;
-  transition: opacity 0.2s;
-}
-
-/* Ensure timer display remains fully visible */
-.fullscreen-enabled.hide-controls.dashboard.timer-mode
-  .timer-panel
-  .big-remaining {
-  opacity: 1;
-}
-
-/* ===== LIGHT THEME (revamped) ===== */
-.light {
-  --bg-light: #f8fafc;
-  --panel-light: #ffffff;
-  --card-light: #f1f5f9;
-}
+/* =========================================================
+   LIGHT THEME
+========================================================= */
 
 .light body {
   background-color: #f1f5f9;
   color: #0f172a;
-}
-
-.light .bg-bg-dark {
-  background-color: #f8fafc;
 }
 
 .light .bg-panel {
@@ -369,107 +376,12 @@
   background-color: #f1f5f9;
 }
 
+.light .text-white,
 .light .text-slate-200,
-.light .text-slate-300,
-.light .text-white {
+.light .text-slate-300 {
   color: #1e293b;
-}
-
-.light .shadow-neumorph-dark {
-  box-shadow:
-    10px 10px 25px rgba(0, 0, 0, 0.05),
-    -5px -5px 15px rgba(255, 255, 255, 0.8),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.02);
-}
-
-.light .shadow-neumorph-light {
-  box-shadow:
-    5px 5px 15px rgba(0, 0, 0, 0.05),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.02);
-}
-
-.light .bg-slate-800 {
-  background-color: #e2e8f0;
-}
-
-.light .bg-slate-900 {
-  background-color: #cbd5e1;
-}
-
-.light .bg-slate-700 {
-  background-color: #f1f5f9;
-}
-
-.light .border-black\/50 {
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.light .text-accent-minute {
-  color: #b45309;
-}
-
-.light .bg-accent-hour {
-  background-color: #f43f5e;
-}
-
-.light .bg-accent-minute {
-  background-color: #eab308;
-}
-
-.light .bg-accent-second {
-  background-color: #10b981;
-}
-
-.light .hover\:bg-rose-600:hover {
-  background-color: #e11d48;
-}
-
-.light .hover\:bg-yellow-400:hover {
-  background-color: #facc15;
-}
-
-.light .hover\:bg-emerald-400:hover {
-  background-color: #34d399;
-}
-
-.light .clock span b {
-  color: #334155;
-}
-
-.light .clock::before {
-  background-color: #1e293b;
-  border-color: #fff;
-}
-
-.light .circle {
-  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .light .info-card {
   background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.light .duration-row .dur-group {
-  background-color: #e2e8f0;
-}
-
-.light .duration-row input {
-  background-color: #ffffff;
-  color: #0f172a;
-}
-
-.light .modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
-}
-
-.light .status-msg {
-  background-color: #f1f5f9;
-  color: #b45309;
-}
-
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
 }

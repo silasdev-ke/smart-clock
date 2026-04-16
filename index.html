@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <meta name="description" content="Smart Clock — a customizable focus timer with analog & digital displays, configurable context, and intelligent fullscreen auto‑hide.">
   <title>Smart Clock | Focus Timer</title>
 
@@ -83,7 +83,7 @@
         <!-- Header with settings button -->
         <div class="timer-header flex items-center justify-between mb-4">
           <h2 id="timerContextHeading" class="text-2xl font-semibold bg-gradient-to-br from-accent-minute to-accent-glow bg-clip-text text-transparent tracking-tight">
-            <i class="fas fa-clock mr-2"></i><span id="contextDisplay">EXAM CONTROL</span>
+            <i class="fas fa-clock mr-2"></i><span id="contextDisplay">TIMER CONTROL</span>
           </h2>
           <button id="settingsBtn" class="text-white/70 hover:text-white transition" title="Settings">
             <i class="fas fa-cog text-xl"></i>
@@ -187,9 +187,11 @@
   </div>
 
   <!-- Settings Modal -->
-  <div id="settingsModal" class="fixed inset-0 flex items-center justify-center z-50 hidden transition-opacity">
-    <div class="modal-backdrop absolute inset-0" id="modalBackdrop"></div>
-    <div class="bg-panel rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl relative z-10 border border-white/10">
+  <div id="settingsModal" class="fixed inset-0 flex items-center justify-center z-50 hidden transition-opacity transition-all duration-300 ease-out">
+
+    <div class="modal-backdrop absolute inset-0 bg-black/70 backdrop-blur-md transition-all duration-300 ease-out" id="modalBackdrop"></div>
+
+    <div class="bg-panel rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl relative z-10 border border-white/10 transform transition-all duration-300 ease-out scale-95">
       <h3 class="text-2xl font-bold mb-6 text-white flex items-center">
         <i class="fas fa-sliders-h mr-3 text-accent-minute"></i>Timer Settings
       </h3>

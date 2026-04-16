@@ -16,7 +16,7 @@ export function initSettings() {
   const subjectDisplay = document.getElementById("subjectDisplay");
   const notesDisplay = document.getElementById("notesDisplay");
 
-  const savedContext = localStorage.getItem("timerContext") || "EXAM CONTROL";
+  const savedContext = localStorage.getItem("timerContext") || "TIMER CONTROL";
   const savedSubject = localStorage.getItem("timerSubject") || "";
   const savedNotes = localStorage.getItem("timerNotes") || "";
   contextDisplay.textContent = savedContext;
@@ -32,7 +32,7 @@ export function initSettings() {
   closeBtn.addEventListener("click", closeModal);
 
   saveBtn.addEventListener("click", () => {
-    const context = contextInput.value.trim() || "EXAM CONTROL";
+    const context = contextInput.value.trim() || "TIMER CONTROL";
     const subject = subjectInput.value.trim();
     const notes = notesInput.value.trim();
     localStorage.setItem("timerContext", context);
