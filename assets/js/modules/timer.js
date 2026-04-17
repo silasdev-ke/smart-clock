@@ -81,7 +81,7 @@ export function initTimer() {
 
     // Status message & button states
     if (remainingSeconds === 0 && totalSeconds > 0) {
-      statusMsg.innerText = "⛔ Activity finished. Press RESET to start new.";
+      statusMsg.innerText = "⛔ Finished. Press RESET to start new.";
       startBtn.disabled = true;
       pauseBtn.disabled = true;
     } else if (isRunning) {
@@ -101,7 +101,7 @@ export function initTimer() {
       totalSeconds > 0 &&
       remainingSeconds === totalSeconds
     ) {
-      statusMsg.innerText = "✅ Ready. Press START to begin activity.";
+      statusMsg.innerText = "✅ Ready. Press START to begin.";
       startBtn.disabled = false;
       pauseBtn.disabled = true;
     } else {
@@ -144,7 +144,7 @@ export function initTimer() {
       remainingSeconds = 0;
       refreshUI();
       // Optional: trigger finish effect (visual only)
-      statusMsg.innerText = "⏰ TIME'S UP! Activity completed.";
+      statusMsg.innerText = "⏰ TIME'S UP! Completed.";
       startBtn.disabled = true;
     }
   }
