@@ -9,7 +9,7 @@ export function initView() {
     modern: "digital",
     standard: "clock",
     split: "both",
-    timerfocus: "timer", // renamed from "exam"
+    timerfocus: "timer",
   };
 
   function setView(viewValue) {

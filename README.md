@@ -1,6 +1,6 @@
 # Smart Clock & Timer – Dual View Clock + Timer
 
-A clean, minimalist web app that combines an analog/digital clock with a countdown timer. Designed for exam settings, it features a distraction‑free interface with smooth animations and responsive layout.
+A clean, minimalist web app that combines an analog/digital clock with a countdown timer. Designed for timer settings, it features a distraction‑free interface with smooth animations and responsive layout.
 
 ![Screenshot](assets/images/screenshots/screenshot.png) <!-- add a screenshot later -->
 
@@ -8,7 +8,7 @@ A clean, minimalist web app that combines an analog/digital clock with a countdo
 
 - **Real‑time analog clock** with hour, minute, and second hands.
 - **Digital clock** displaying hours, minutes, seconds, and AM/PM.
-- **Exam timer** with:
+- **Timer** with:
   - Custom duration (hours/minutes/seconds)
   - Start, pause, reset controls
   - Progress bar and percentage
